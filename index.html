@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSLC Social Science Exam-Cram</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header & Stats -->
+    <header class="app-header">
+      <div class="header-top">
+        <h1 class="app-title">⚡ SSLC SS CRAM</h1>
+        <div class="header-badges">
+          <span class="badge readiness-badge" id="header-readiness">Readiness: 0%</span>
+          <span class="badge timer-badge hidden" id="header-cram-timer">⏱️ 05:00:00</span>
+        </div>
+      </div>
+
+      <!-- Quick Navigation Tabs -->
+      <nav class="nav-scroll">
+        <button class="nav-btn active" data-target="topics-view">📚 Topics</button>
+        <button class="nav-btn" data-target="recall-view">🧠 Active Recall</button>
+        <button class="nav-btn" data-target="write-answer-view">✍️ Write Answer</button>
+        <button class="nav-btn" data-target="rapid-fire-view">⚡ Rapid Fire</button>
+        <button class="nav-btn" data-target="map-training-view">🗺️ Map Quiz</button>
+        <button class="nav-btn" data-target="numerical-view">📊 Numerical</button>
+        <button class="nav-btn" data-target="cram-5hr-view">🔥 5-Hr Mode</button>
+        <button class="nav-btn" data-target="last-30min-view">🚨 Last 30 Min</button>
+        <button class="nav-btn" data-target="final-boss-view">👑 Final Boss</button>
+        <button class="nav-btn" data-target="progress-view">📈 Progress</button>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- 1. TOPIC SYSTEM VIEW -->
+      <section id="topics-view" class="view-panel active">
+        <div class="panel-header">
+          <h2>SSLC Social Science Ranked Topics</h2>
+          <p class="subtitle">15 Key Concepts ranked by exam frequency and marks weightage</p>
+        </div>
+        <div class="topic-summary-cards">
+          <div class="card stat-mini">
+            <span class="stat-num" id="topic-total-count">15</span>
+            <span class="stat-label">Total Topics</span>
+          </div>
+          <div class="card stat-mini">
+            <span class="stat-num" id="topic-high-pri-count">6</span>
+            <span class="stat-label">High Priority</span>
+          </div>
+          <div class="card stat-mini">
+            <span class="stat-num" id="topic-weak-count">0</span>
+            <span class="stat-label">Weak Topics</span>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="topic-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Topic / Concept</th>
+                <th>Chapter</th>
+                <th>Freq</th>
+                <th>Exp. Marks</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="topic-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. ACTIVE RECALL VIEW -->
+      <section id="recall-view" class="view-panel">
+        <div class="panel-header">
+          <h2>Active Recall Engine</h2>
+          <p class="subtitle">Answer first before viewing model answers. Spaced repetition active.</p>
+        </div>
+
+        <div class="filters-bar">
+          <select id="recall-topic-filter" class="custom-select">
+            <option value="all">All Topics (15)</option>
+          </select>
+          <select id="recall-type-filter" class="custom-select">
+            <option value="all">All Question Types</option>
+            <option value="mcq">MCQ</option>
+            <option value="fill">Fill in the Blanks</option>
+            <option value="match">Matching</option>
+            <option value="short">Short Answer</option>
+            <option value="case">Case Study</option>
+            <option value="reasoning">Reasoning</option>
+            <option value="chart">Chart Completion</option>
+          </select>
+        </div>
+
+        <div class="card recall-card" id="recall-card">
+          <div class="card-meta">
+            <span class="badge priority-tag" id="recall-priority">Priority: HIGH</span>
+            <span class="badge topic-tag" id="recall-topic-name">Topic Name</span>
+            <span class="badge type-tag" id="recall-type">Type</span>
+            <span class="srs-box" id="recall-srs-box">Box 1</span>
+          </div>
+
+          <div class="question-box" id="recall-question-box">
+            <!-- Question text rendered here -->
+          </div>
+
+          <!-- Answer Input Area -->
+          <div class="answer-input-area" id="recall-input-area">
+            <!-- Options or text input will be injected dynamically -->
+          </div>
+
+          <!-- Action Buttons Before Reveal -->
+          <div class="recall-actions" id="recall-pre-reveal">
+            <button class="btn btn-primary" id="btn-reveal-answer">Submit & Reveal Model Answer</button>
+            <button class="btn btn-secondary" id="btn-skip-question">Skip Question</button>
+          </div>
+
+          <!-- Model Answer Section (Hidden until submitted) -->
+          <div class="model-answer-section hidden" id="recall-model-section">
+            <div class="user-attempt-display">
+              <h4>Your Response:</h4>
+              <p id="recall-user-attempt" class="user-response-text"></p>
+            </div>
+
+            <div class="model-answer-box">
+              <h4>Model Answer / Key Points:</h4>
+              <div id="recall-model-answer"></div>
+            </div>
+
+            <div class="self-grading-bar">
+              <p>How well did you recall?</p>
+              <div class="grade-buttons">
+                <button class="btn btn-grade btn-wrong" data-grade="wrong">❌ Wrong / Didn't Know</button>
+                <button class="btn btn-grade btn-partial" data-grade="partial">⚠️ Partially Correct</button>
+                <button class="btn btn-grade btn-correct" data-grade="correct">✅ Fully Correct</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. WRITE-THE-ANSWER MODE -->
+      <section id="write-answer-view" class="view-panel">
+        <div class="panel-header">
+          <h2>Write-the-Answer Mode (3 - 8 Marks)</h2>
+          <p class="subtitle">Mandatory complete text entry before revealing model key points.</p>
+        </div>
+
+        <div class="card long-answer-card">
+          <div class="card-meta">
+            <span class="badge marks-tag" id="write-marks-badge">5 Marks</span>
+            <span class="badge topic-tag" id="write-topic-badge">Topic</span>
+          </div>
+
+          <div class="question-box" id="write-question-box">
+            <!-- Long question -->
+          </div>
+
+          <div class="write-area">
+            <label for="write-user-input" class="input-label">Type your complete structured answer here:</label>
+            <textarea id="write-user-input" class="custom-textarea" rows="7" placeholder="Type your full answer using bullet points or key concepts..."></textarea>
+            <div class="word-count-bar"><span id="write-word-count">0</span> words typed</div>
+          </div>
+
+          <button class="btn btn-primary btn-block" id="btn-submit-write">Reveal Model Answer & Key Points Analysis</button>
+
+          <div class="write-feedback-section hidden" id="write-feedback-section">
+            <div class="model-answer-box">
+              <h4>Model Answer:</h4>
+              <div id="write-model-text"></div>
+            </div>
+
+            <div class="keypoint-analysis-box">
+              <h4>Key Points Breakdown:</h4>
+              <ul id="write-keypoints-list" class="keypoint-checklist">
+                <!-- Identified / Missing keypoints -->
+              </ul>
+            </div>
+
+            <div class="self-grading-bar">
+              <p>Self-Grade your answer:</p>
+              <div class="grade-buttons">
+                <button class="btn btn-grade btn-wrong" data-write-grade="wrong">❌ Missed Key Points</button>
+                <button class="btn btn-grade btn-partial" data-write-grade="partial">⚠️ Partially Correct</button>
+                <button class="btn btn-grade btn-correct" data-write-grade="correct">✅ Included Key Points</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. RAPID FIRE MODE -->
+      <section id="rapid-fire-view" class="view-panel">
+        <div class="panel-header">
+          <h2>⚡ Rapid Fire Mode</h2>
+          <p class="subtitle">30-second rapid timed questions. Speed + precision recall!</p>
+        </div>
+
+        <div class="rapid-fire-wrapper">
+          <div class="rapid-timer-bar">
+            <div class="rapid-timer-progress" id="rapid-timer-fill"></div>
+          </div>
+          <div class="rapid-timer-text" id="rapid-timer-clock">30s</div>
+
+          <div class="card rapid-card">
+            <div class="card-meta">
+              <span class="badge topic-tag" id="rapid-topic-badge">Topic</span>
+              <span class="badge score-tag" id="rapid-streak-badge">Streak: 0</span>
+            </div>
+
+            <div class="question-box" id="rapid-question-box">
+              <!-- Rapid Question -->
+            </div>
+
+            <div class="rapid-options-grid" id="rapid-options-container">
+              <!-- Options injected dynamically -->
+            </div>
+
+            <div class="rapid-feedback-banner hidden" id="rapid-feedback-banner">
+              <!-- Result text -->
+            </div>
+            <button class="btn btn-primary btn-block hidden" id="btn-next-rapid">Next Rapid Question ⚡</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. MAP TRAINING VIEW -->
+      <section id="map-training-view" class="view-panel">
+        <div class="panel-header">
+          <h2>🗺️ World Deserts & Grasslands Map Quiz</h2>
+          <p class="subtitle">Identify key geographic locations: Deserts (Sahara, Kalahari, Atacama, Gobi, Thar, Great Victoria) & Grasslands (Prairies, Savanna, Steppes, Pampas, Veld, Downs).</p>
+        </div>
+
+        <div class="map-quiz-card card">
+          <div class="map-prompt-box">
+            <div class="prompt-text">Locate on map: <strong id="map-target-name">Target Location</strong></div>
+            <div class="map-score-badge">Map Score: <span id="map-score-val">0 / 0</span></div>
+          </div>
+
+          <!-- Interactive SVG World Map Schematic -->
+          <div class="svg-map-wrapper">
+            <svg id="world-map-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+              <!-- Simplified Continents Outlines -->
+              <!-- North America -->
+              <path class="continent" d="M 120 80 Q 200 60 280 110 T 220 220 T 130 180 Z" />
+              <!-- South America -->
+              <path class="continent" d="M 230 250 Q 320 270 310 380 T 260 460 T 210 330 Z" />
+              <!-- Europe -->
+              <path class="continent" d="M 450 70 Q 560 60 580 140 T 470 160 Z" />
+              <!-- Africa -->
+              <path class="continent" d="M 460 170 Q 590 180 580 320 T 500 420 T 440 280 Z" />
+              <!-- Asia -->
+              <path class="continent" d="M 590 70 Q 820 60 880 180 T 680 260 T 580 160 Z" />
+              <!-- Australia -->
+              <path class="continent" d="M 750 320 Q 870 310 880 410 T 760 410 Z" />
+
+              <!-- Interactive Hotspots / Pins -->
+              <!-- 1. Prairies (North America) -->
+              <g class="map-pin" data-target="Prairies" transform="translate(190, 120)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">1</text>
+              </g>
+
+              <!-- 2. Atacama (South America West) -->
+              <g class="map-pin" data-target="Atacama Desert" transform="translate(245, 310)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">2</text>
+              </g>
+
+              <!-- 3. Pampas (South America South) -->
+              <g class="map-pin" data-target="Pampas" transform="translate(265, 390)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">3</text>
+              </g>
+
+              <!-- 4. Sahara Desert (North Africa) -->
+              <g class="map-pin" data-target="Sahara Desert" transform="translate(500, 210)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">4</text>
+              </g>
+
+              <!-- 5. Savanna (Central/East Africa) -->
+              <g class="map-pin" data-target="Savanna" transform="translate(520, 270)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">5</text>
+              </g>
+
+              <!-- 6. Kalahari Desert (South Africa) -->
+              <g class="map-pin" data-target="Kalahari Desert" transform="translate(510, 360)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">6</text>
+              </g>
+
+              <!-- 7. Veld (South Africa Grassland) -->
+              <g class="map-pin" data-target="Veld" transform="translate(535, 385)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">7</text>
+              </g>
+
+              <!-- 8. Steppes (Eurasia) -->
+              <g class="map-pin" data-target="Steppes" transform="translate(620, 120)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">8</text>
+              </g>
+
+              <!-- 9. Thar Desert (India) -->
+              <g class="map-pin" data-target="Thar Desert" transform="translate(670, 200)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">9</text>
+              </g>
+
+              <!-- 10. Gobi Desert (East Asia) -->
+              <g class="map-pin" data-target="Gobi Desert" transform="translate(750, 140)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">10</text>
+              </g>
+
+              <!-- 11. Great Victoria Desert (Australia West/Center) -->
+              <g class="map-pin" data-target="Great Victoria Desert" transform="translate(800, 360)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">11</text>
+              </g>
+
+              <!-- 12. Downs (Australia East) -->
+              <g class="map-pin" data-target="Downs" transform="translate(845, 375)">
+                <circle r="16" class="pin-circle"/>
+                <text y="5" text-anchor="middle" class="pin-text">12</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="map-feedback" id="map-feedback-box">
+            Click on the matching pin on the world map!
+          </div>
+
+          <button class="btn btn-secondary btn-block" id="btn-next-map">Next Map Question</button>
+        </div>
+      </section>
+
+      <!-- 6. NUMERICAL TRAINING VIEW -->
+      <section id="numerical-view" class="view-panel">
+        <div class="panel-header">
+          <h2>📊 Numerical Training: Climate & Temperature</h2>
+          <p class="subtitle">Master Diurnal Range ($T_{max} - T_{min}$) & Daily Mean Temperature calculations.</p>
+        </div>
+
+        <div class="card numerical-card">
+          <div class="formula-box">
+            <div class="formula-item">
+              <strong>Diurnal Range:</strong> $T_{max} - T_{min}$
+            </div>
+            <div class="formula-item">
+              <strong>Daily Mean Temp:</strong> $\frac{\text{Sum of hourly or readings}}{\text{Count of readings}}$
+            </div>
+          </div>
+
+          <div class="numerical-problem-box" id="num-problem-box">
+            <!-- Problem details -->
+          </div>
+
+          <div class="num-inputs-grid">
+            <div class="input-group">
+              <label for="num-user-range">Calculated Diurnal Range (°C):</label>
+              <input type="number" step="0.1" id="num-user-range" class="custom-input" placeholder="e.g. 12.5">
+            </div>
+            <div class="input-group">
+              <label for="num-user-mean">Calculated Daily Mean Temp (°C):</label>
+              <input type="number" step="0.1" id="num-user-mean" class="custom-input" placeholder="e.g. 24.0">
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block" id="btn-submit-numerical">Submit Numerical Answers</button>
+
+          <div class="num-solution-box hidden" id="num-solution-box">
+            <h4>Step-by-Step Solution Breakdown:</h4>
+            <div id="num-solution-content"></div>
+            <button class="btn btn-secondary btn-block" id="btn-next-numerical" style="margin-top:12px;">Try Another Problem</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. 5-HOUR CRAM MODE VIEW -->
+      <section id="cram-5hr-view" class="view-panel">
+        <div class="panel-header">
+          <h2>🔥 5-Hour Cram Mode</h2>
+          <p class="subtitle">Dynamic prioritization engine queue: Priority = Frequency × Expected Marks × Weakness Factor.</p>
+        </div>
+
+        <div class="card cram-controls-card">
+          <div class="timer-display-huge" id="cram-main-clock">05:00:00</div>
+          <div class="cram-btn-group">
+            <button class="btn btn-primary" id="btn-start-5hr">Start 5-Hour Countdown</button>
+            <button class="btn btn-secondary" id="btn-pause-5hr">Pause</button>
+            <button class="btn btn-danger" id="btn-reset-5hr">Reset Timer</button>
+          </div>
+        </div>
+
+        <div class="cram-queue-section">
+          <h3>Auto-Generated Cram Queue</h3>
+          <div class="cram-queue-list" id="cram-queue-container">
+            <!-- Priority queue rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. LAST 30 MINUTES VIEW -->
+      <section id="last-30min-view" class="view-panel">
+        <div class="panel-header">
+          <h2>🚨 Last 30 Minutes Emergency Cram</h2>
+          <p class="subtitle">Ultra-concentrated high-yield deck of core facts, definitions, and high-frequency exam points.</p>
+        </div>
+
+        <div class="last30-carousel" id="last30-container">
+          <!-- High yield flash cards -->
+        </div>
+      </section>
+
+      <!-- 9. FINAL BOSS VIEW -->
+      <section id="final-boss-view" class="view-panel">
+        <div class="panel-header">
+          <h2>👑 Final Boss: 30-Question SSLC Exam Simulation</h2>
+          <p class="subtitle">Full-length trial covering all 15 topics. Results and review revealed ONLY after finishing all 30 questions.</p>
+        </div>
+
+        <div id="boss-start-container" class="card text-center">
+          <h3>Ready for the Ultimate Exam Challenge?</h3>
+          <p>30 mixed questions (MCQ, Fill in blanks, Long answers, Reasoning, Numerical, Map points).</p>
+          <button class="btn btn-primary btn-large" id="btn-start-boss">🚀 Launch Final Boss Exam</button>
+        </div>
+
+        <div id="boss-quiz-container" class="card boss-quiz-card hidden">
+          <div class="boss-progress-bar">
+            <div id="boss-progress-fill" class="boss-progress-fill" style="width: 3.33%;"></div>
+          </div>
+          <div class="boss-quiz-header">
+            <span id="boss-q-num" class="badge">Question 1 of 30</span>
+            <span id="boss-topic-tag" class="badge topic-tag">Topic</span>
+          </div>
+
+          <div class="question-box" id="boss-question-text">
+            <!-- Boss Question -->
+          </div>
+
+          <div id="boss-input-container">
+            <!-- Input area depending on type -->
+          </div>
+
+          <div class="boss-nav-buttons">
+            <button class="btn btn-primary" id="btn-boss-next">Submit & Next Question ➔</button>
+          </div>
+        </div>
+
+        <div id="boss-result-container" class="card boss-result-card hidden">
+          <h3>🏆 Final Boss Exam Complete!</h3>
+          <div class="boss-score-display">
+            <div class="score-circle" id="boss-final-score">0 / 30</div>
+            <div class="score-label" id="boss-readiness-label">Exam Readiness Impact</div>
+          </div>
+          <div id="boss-detailed-breakdown">
+            <!-- Summary breakdown of answers -->
+          </div>
+          <button class="btn btn-primary" id="btn-restart-boss">Retake Final Boss Exam</button>
+        </div>
+      </section>
+
+      <!-- 10. PROGRESS DASHBOARD VIEW -->
+      <section id="progress-view" class="view-panel">
+        <div class="panel-header">
+          <h2>📈 Learning Progress & Mastery Analytics</h2>
+          <p class="subtitle">Tracked automatically in localStorage across all active recall sessions.</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="card stat-card">
+            <span class="stat-title">Overall Readiness</span>
+            <span class="stat-value highlight" id="prog-readiness">0%</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-title">Attempted</span>
+            <span class="stat-value" id="prog-attempted">0</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-title">Accuracy Rate</span>
+            <span class="stat-value" id="prog-accuracy">0%</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-title">Mastered Topics</span>
+            <span class="stat-value" id="prog-mastered-count">0 / 15</span>
+          </div>
+        </div>
+
+        <div class="dashboard-columns">
+          <div class="card dash-col">
+            <h3>⚠️ Weak Topics (Needs Focus)</h3>
+            <ul id="prog-weak-list" class="topic-status-list">
+              <!-- Dynamically added -->
+            </ul>
+          </div>
+          <div class="card dash-col">
+            <h3>🌟 Mastered Topics</h3>
+            <ul id="prog-mastered-list" class="topic-status-list">
+              <!-- Dynamically added -->
+            </ul>
+          </div>
+        </div>
+
+        <div class="card text-center margin-top-20">
+          <button class="btn btn-danger" id="btn-reset-stats">🗑️ Reset All Progress Stats</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- SKIP CONFIRMATION MODAL -->
+  <div id="skip-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>⚠️ Confirm Skip</h3>
+      <p>Skipping difficult or wrong questions reduces active recall effectiveness! Are you sure you want to skip without answering?</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="modal-btn-cancel">Go Back & Try</button>
+        <button class="btn btn-danger" id="modal-btn-confirm">Yes, Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/srs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
